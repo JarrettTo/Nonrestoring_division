@@ -15,6 +15,13 @@ const Answer =({input})=>{
         if(input.format==0){
             input.dividend=parseInt(input.dividend,10).toString(2)
             input.divisor=parseInt(input.divisor,10).toString(2)
+            console.log(input.dividend)
+            console.log(input.divisor)
+            if(input.divisor.length<=input.dividend.length){
+                while(input.divisor.length<input.dividend.length+1){
+                    input.divisor = "0".concat(input.divisor)
+                }
+            }
             setResult({...result, Q: input.dividend, A: '0000', M:input.divisor});
         }
         
@@ -26,7 +33,16 @@ const Answer =({input})=>{
             textToBinary();
         }
         else{
-            setResult({...result, Q: input.dividend, A: '0000', M:input.divisor});
+            if(input.divisor.length<=input.dividend.length){
+                while(input.divisor.length<input.dividend.length+1){
+                    input.divisor = "0".concat(input.divisor)
+                }
+            }
+            let tempA = "";
+            while (tempA.length<input.divisor.length){
+                tempA = tempA.concat("0");
+            }
+            setResult({...result, Q: input.dividend, A: tempA, M:input.divisor});
         }
         
     }, [input]);
@@ -37,6 +53,7 @@ const Answer =({input})=>{
                     <>
                     <div>Dividend: {result.Q}</div>
                     <div>Divisor: {result.M}</div>
+                    <div>A: {result.A}</div>
                     </>
                 )}
             </>
