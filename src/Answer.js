@@ -22,7 +22,11 @@ const Answer =({input})=>{
                     input.divisor = "0".concat(input.divisor)
                 }
             }
-            setResult({...result, Q: input.dividend, A: '0000', M:input.divisor});
+            let tempA = "";
+            while (tempA.length<input.divisor.length){
+                tempA = tempA.concat("0");
+            }
+            setResult({...result, Q: input.dividend, A: tempA, M:input.divisor});
         }
         
     
