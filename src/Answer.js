@@ -26,7 +26,8 @@ const Answer =({input})=>{
             while (tempA.length<input.divisor.length){
                 tempA = tempA.concat("0");
             }
-            setResult({...result, Q: input.dividend, A: tempA, M:input.divisor});
+            var compM = parseInt((~parseInt(input.divisor,2) + 1 >>> 0).toString(10),10).toString(2).slice(-1*input.divisor.length);
+            setResult({...result, Q: input.dividend, A: tempA, M:input.divisor, nM:compM});
         }
         
     
@@ -46,9 +47,10 @@ const Answer =({input})=>{
             while (tempA.length<input.divisor.length){
                 tempA = tempA.concat("0");
             }
-            setResult({...result, Q: input.dividend, A: tempA, M:input.divisor});
-        }
-        
+            var compM = parseInt((~parseInt(input.divisor,2) + 1 >>> 0).toString(10),10).toString(2).slice(-1*input.divisor.length);
+            setResult({...result, Q: input.dividend, A: tempA, M:input.divisor, nM:compM});
+        }     
+
     }, [input]);
     return(
       
@@ -58,6 +60,7 @@ const Answer =({input})=>{
                     <div>Dividend: {result.Q}</div>
                     <div>Divisor: {result.M}</div>
                     <div>A: {result.A}</div>
+                    <div>-M: {result.nM}</div>
                     </>
                 )}
             </>
