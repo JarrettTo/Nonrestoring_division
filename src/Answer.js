@@ -49,6 +49,7 @@ const Answer =({input})=>{
         let tempA2 = tempA;
         let tempQ2 = input.dividend
         for(let i = 0; i < n; i++){
+            console.log("Pass #" + (i+1));
             if (tempA2.charAt(0) == '0'){
                 tempA1 = tempA2.slice(-1*(tempA2.length-1)) + tempQ2.charAt(0);
                 tempQ1 = tempQ2.slice(-1*(tempQ2.length-1)) + "_"
