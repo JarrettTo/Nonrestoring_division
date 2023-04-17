@@ -41,6 +41,7 @@ const Answer =({input})=>{
         setResult({...result, Q: input.dividend, A: tempA, M:input.divisor, nM:compM});
         let negM = parseInt((parseInt(input.divisor,2)).toString(10),10)*-1;
         let M = parseInt((parseInt(input.divisor,2)).toString(10),10);
+        let passes = new Array();
         console.log(negM);
         console.log(M);
         let n = input.dividend.length;
@@ -62,6 +63,10 @@ const Answer =({input})=>{
                 console.log(tempQ1);
                 console.log(tempA2);
                 console.log(tempQ2);
+                if(i<n-1){
+                    let pass = {"A1": tempA1, "A2": tempA2, "A3": tempA2, "Q1": tempQ1, "Q2": tempQ2};
+                    passes.push(pass);
+                }
             }
             else{
                 tempA1 = tempA2.slice(-1*(tempA2.length-1)) + tempQ2.charAt(0);
@@ -75,12 +80,19 @@ const Answer =({input})=>{
                 console.log(tempQ1);
                 console.log(tempA2);
                 console.log(tempQ2);
+                if(i<n-1){
+                    let pass = {"A1": tempA1, "A2": tempA2, "A3": tempA2, "Q1": tempQ1, "Q2": tempQ2};
+                    passes.push(pass);
+                }
             }
         }
         if (tempA2.charAt(0) == '1'){
             console.log("A is negative. Restore")
             tempA2 = (parseInt(parseInt(parseInt(tempA2,2).toString(10),10) + M,10) >>> 0).toString(2).slice(-1*input.divisor.length);
+            let pass = {"A1": tempA1, "A2": tempA2, "A3": tempA2, "Q1": tempQ1, "Q2": tempQ2};
+            passes.push(pass);
         }
+        console.log(passes);
         console.log("Final");
         console.log("Quotient");
         console.log("Binary: " + tempQ2);
