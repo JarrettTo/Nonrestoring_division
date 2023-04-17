@@ -13,6 +13,7 @@ const Answer =({input})=>{
         FA:""
     });
     const [solution, setSolution] = useState(null);
+    const [stepNo, setStepNo] = useState(1);
     const useStyles = makeStyles({
         paperWithBorder: {
           border: '1px solid #000000',
@@ -28,6 +29,11 @@ const Answer =({input})=>{
         this.A3 = A3;
         this.Q1 = Q1;
         this.A2 = Q2;
+    };
+    const incStep = async () => {
+        
+        setStepNo(stepNo+1);
+        
     };
     const textToBinary = async() => {
         console.log("WOW")
@@ -121,7 +127,8 @@ const Answer =({input})=>{
     };
     useEffect(() => {
         console.log("SHE")
-       
+        setSolution(null);
+        setStepNo(1)
         if(input.format==0){
             textToBinary();
         }
@@ -140,7 +147,7 @@ const Answer =({input})=>{
             
             <>
 
-                {(solution && solution.length > 0) ? solution.map((pass,idx)=>
+                {(solution && solution.length > 0 && input.step==0) ? solution.map((pass,idx)=>
                     <>
                     <Paper className={classes.paperWithBorder}>
                         <Typography>Pass #{idx+1}:</Typography>
@@ -150,6 +157,20 @@ const Answer =({input})=>{
                     </Paper>
                     </>
                 ): "loading"}
+                
+                {(solution && solution.length > 0 && input.step==1) ? solution.slice(0,stepNo).map((pass,idx)=>
+                    <>
+                    <Paper className={classes.paperWithBorder}>
+                        <Typography>Pass #{idx+1}:</Typography>
+                        <Typography>A:{"\t"+pass.A1+"\tQ:"+pass.Q1}</Typography>
+                        <Typography>A:{"\t"+pass.A2+"\tQ"+pass.Q1}</Typography>
+                        <Typography>A:{"\t"+pass.A3+"\tQ:"+pass.Q2}</Typography>
+                    </Paper>
+                    </>
+                ): "loading"}
+                {(solution && solution.length > 0 && input.step==1) ? 
+                    (<Button onClick={incStep}> Next Step</Button>)
+                : "loading"}
             </>
         
     )
