@@ -22,15 +22,15 @@ Note: Input should be based on your selected type of digit.
  
 Select between Step-by-step or All solution mode.
 
-***Step-by-step***
+**Step-by-step**
 - Selecting this option display the solution step-by-step.
-- Click the "Next" button to proceed to the next step.
+- Click the "NEXT STEP" button to proceed to the next step.
 
-***All***
+**All**
 - Selecting this option will display the whole solution immediately.
 
 ### Solve:
-After placing your inputs and selecting the solution type, view the solution by clicking the "Solve" button.
+After placing your inputs and selecting the solution type, view the solution by clicking the "SUBMIT" button.
 
 ### Save:
 After the simulator solves the operation, you have the option to save the solution as a ***Text File***.
