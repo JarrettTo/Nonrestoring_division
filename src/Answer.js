@@ -13,6 +13,7 @@ const Answer =({input})=>{
         FA:""
     });
     const [solution, setSolution] = useState(null);
+    const [text, setText] = useState("");
     const [stepNo, setStepNo] = useState(1);
     const useStyles = makeStyles({
         paperWithBorder: {
@@ -33,6 +34,33 @@ const Answer =({input})=>{
     const incStep = async () => {
         
         setStepNo(stepNo+1);
+        
+    };
+    const assembleText = async ()=>{
+        var report=""
+        solution.map((pass, idx)=>{
+            report=report.concat(`Pass #${idx+1}`)
+            report=report.concat('\n',`A: ${pass.A1}  Q:${pass.Q1}`)
+            report=report.concat('\n',`A: ${pass.A2}  Q:${pass.Q1}`)
+            report=report.concat('\n',`A: ${pass.A3}  Q:${pass.Q2}`)
+            report=report.concat('\n\n')
+            
+        })
+        console.log(report)
+        return report
+    }
+    const genText = async () => {
+        let report=await assembleText()
+        const blob = new Blob([report], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.setAttribute('download', 'non-restoringDivision');
+        a.setAttribute('href', url);
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
         
     };
     const textToBinary = async() => {
@@ -89,6 +117,7 @@ const Answer =({input})=>{
                 }
             }
             else{
+                
                 tempA1 = tempA2.slice(-1*input.dividend.length) + tempQ2.charAt(0);
                 tempQ1 = tempQ2.slice(-1*(n-1)) + "_"
                 tempA2 = (parseInt(parseInt(parseInt(tempA1,2).toString(10),10) + M,10) >>> 0).toString(2).slice(-1*input.divisor.length).padStart(input.divisor.length, "0");
@@ -109,6 +138,10 @@ const Answer =({input})=>{
         if (tempA2.charAt(0) == '1'){
             console.log("A is negative. Restore")
             tempA2 = (parseInt(parseInt(parseInt(tempA2,2).toString(10),10) + M,10) >>> 0).toString(2).slice(-1*input.divisor.length);
+            let pass = {"A1": tempA1, "A2": tempA2, "A3": tempA2, "Q1": tempQ1, "Q2": tempQ2};
+            passes.push(pass);
+        }
+        else{
             let pass = {"A1": tempA1, "A2": tempA2, "A3": tempA2, "Q1": tempQ1, "Q2": tempQ2};
             passes.push(pass);
         }
@@ -156,7 +189,7 @@ const Answer =({input})=>{
                         <Typography>A:{"\t"+pass.A3+"\tQ:"+pass.Q2}</Typography>
                     </Paper>
                     </>
-                ): "loading"}
+                ): ""}
                 
                 {(solution && solution.length > 0 && input.step==1) ? solution.slice(0,stepNo).map((pass,idx)=>
                     <>
@@ -167,10 +200,14 @@ const Answer =({input})=>{
                         <Typography>A:{"\t"+pass.A3+"\tQ:"+pass.Q2}</Typography>
                     </Paper>
                     </>
-                ): "loading"}
+                ): ""}
                 {(solution && solution.length > 0 && input.step==1) ? 
                     (<Button onClick={incStep}> Next Step</Button>)
-                : "loading"}
+                : ""}
+
+                {(solution && solution.length > 0 ) ? 
+                    (<Button onClick={genText}> Generate Text Report</Button>)
+                : ""}
             </>
         
     )

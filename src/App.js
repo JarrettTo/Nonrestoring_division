@@ -35,8 +35,29 @@ const App =() =>{
             clear();
         }
         else{
-            setInput({...postData, answer:1});
-            setPostData({...postData, answer:1});
+            
+            if(postData.format==1){
+                if(!isBinary(postData.dividend) || !isBinary(postData.divisor) || postData.dividend.length>16 || postData.divisor.length>16){
+                    console.log("error");
+                    clear();
+                }
+                else{
+                    setInput({...postData, answer:1});
+                    setPostData({...postData, answer:1});
+                }
+
+            }else{
+                if(Number(postData.dividend)>65536 || Number(postData.divisor)>65536){
+                    console.log("error");
+                    clear();
+                }
+                else{
+                    setInput({...postData, answer:1});
+                    setPostData({...postData, answer:1});
+                }
+                
+            }
+            
             
             
         }
@@ -47,14 +68,16 @@ const App =() =>{
           format: 0,
           answer:0,
           divisor:"",
-          dividend:""
+          dividend:"",
+          step: 0
           
         });
         setInput({
             format: 0,
             answer:0,
             divisor:"",
-            dividend:""
+            dividend:"",
+            step: 0
             
           });
     };
@@ -62,6 +85,9 @@ const App =() =>{
     function isInteger(value) {
         return /^\d+$/.test(value);
     }
+    function isBinary(str) {
+        return /^[01]+$/.test(str);
+      }
     return(
         <div>
             <form autoComplete="off" noValidate  onSubmit={handleSubmit} >
