@@ -140,13 +140,13 @@ const Answer =({input})=>{
             
             <>
 
-                {(solution && solution.length > 0) ? solution.map((pass)=>
+                {(solution && solution.length > 0) ? solution.map((pass,idx)=>
                     <>
                     <Paper className={classes.paperWithBorder}>
-                        <Typography>Pass :</Typography>
-                        <Typography>{pass.A1+" "+pass.Q1}</Typography>
-                        <Typography>{pass.A2}</Typography>
-                        <Typography>{pass.A3+" "+pass.Q2}</Typography>
+                        <Typography>Pass #{idx+1}:</Typography>
+                        <Typography>A:{"\t"+pass.A1+"\tQ:"+pass.Q1}</Typography>
+                        <Typography>A:{"\t"+pass.A2+"\tQ"+pass.Q1}</Typography>
+                        <Typography>A:{"\t"+pass.A3+"\tQ:"+pass.Q2}</Typography>
                     </Paper>
                     </>
                 ): "loading"}
