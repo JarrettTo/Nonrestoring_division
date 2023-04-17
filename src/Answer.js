@@ -24,6 +24,7 @@ const Answer =({input})=>{
         if(input.format==0){
             input.dividend=parseInt(input.dividend,10).toString(2)
             input.divisor=parseInt(input.divisor,10).toString(2)
+            //input.dividend = "0".concat(input.dividend)
             console.log(input.dividend)
             console.log(input.divisor)
             if(input.divisor.length<=input.dividend.length){
@@ -31,6 +32,8 @@ const Answer =({input})=>{
                     input.divisor = "0".concat(input.divisor)
                 }
             }
+            console.log(input.dividend);
+            console.log(input.divisor);
             doNRD();
         }   
     };
@@ -52,31 +55,31 @@ const Answer =({input})=>{
         let tempQ2 = input.dividend
         for(let i = 0; i < n; i++){
             console.log("Pass #" + (i+1));
+            console.log(tempA2.slice(-1*input.dividend.length), " ", tempQ2.charAt(0));
             if (tempA2.charAt(0) == '0'){
-                tempA1 = tempA2.slice(-1*(tempA2.length-1)) + tempQ2.charAt(0);
-                tempQ1 = tempQ2.slice(-1*(tempQ2.length-1)) + "_"
-                tempA2 = (parseInt(parseInt(parseInt(tempA1,2).toString(10),10) + negM,10) >>> 0).toString(2).slice(-1*input.divisor.length);
+                tempA1 = tempA2.slice(-1*input.dividend.length) + tempQ2.charAt(0);
+                tempQ1 = tempQ2.slice(-1*(n-1)) + "_"
+                tempA2 = (parseInt(parseInt(parseInt(tempA1,2).toString(10),10) + negM,10) >>> 0).toString(2).slice(-1*input.divisor.length).padStart(input.divisor.length, "0");
                 if (tempA2.charAt(0) == '0')
-                    tempQ2 = tempQ1.slice(0,tempQ1.length-1) + "1";
+                    tempQ2 = tempQ1.slice(0,n-1) + "1";
                 else
-                    tempQ2 = tempQ1.slice(0,tempQ1.length-1) + "0";
-                console.log(tempA1);
-                console.log(tempQ1);
-                console.log(tempA2);
-                console.log(tempQ2);
+                    tempQ2 = tempQ1.slice(0,n-1) + "0";
+                console.log(tempA1, " ", tempQ1);
+                console.log(tempA2, " ", tempQ1);
+                console.log(tempA2, " ", tempQ2);
                 if(i<n-1){
                     let pass = {"A1": tempA1, "A2": tempA2, "A3": tempA2, "Q1": tempQ1, "Q2": tempQ2};
                     passes.push(pass);
                 }
             }
             else{
-                tempA1 = tempA2.slice(-1*(tempA2.length-1)) + tempQ2.charAt(0);
-                tempQ1 = tempQ2.slice(-1*(tempQ2.length-1)) + "_"
-                tempA2 = (parseInt(parseInt(parseInt(tempA1,2).toString(10),10) + M,10) >>> 0).toString(2).slice(-1*input.divisor.length);
+                tempA1 = tempA2.slice(-1*input.dividend.length) + tempQ2.charAt(0);
+                tempQ1 = tempQ2.slice(-1*(n-1)) + "_"
+                tempA2 = (parseInt(parseInt(parseInt(tempA1,2).toString(10),10) + M,10) >>> 0).toString(2).slice(-1*input.divisor.length).padStart(input.divisor.length, "0");
                 if (tempA2.charAt(0) == '0')
-                    tempQ2 = tempQ1.slice(0,tempQ1.length-1) + "1";
+                    tempQ2 = tempQ1.slice(0,n-1) + "1";
                 else
-                    tempQ2 = tempQ1.slice(0,tempQ1.length-1) + "0";
+                    tempQ2 = tempQ1.slice(0,n-1) + "0";
                 console.log(tempA1);
                 console.log(tempQ1);
                 console.log(tempA2);
