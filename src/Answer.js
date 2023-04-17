@@ -8,7 +8,9 @@ const Answer =({input})=>{
         M:"",
         nM:"",
         Q:"",
-        A:""
+        A:"",
+        FQ:"",
+        FA:""
     });
     function pass(A1, A2, A3, Q1, Q2){
         this.A1 = A1;
@@ -38,7 +40,6 @@ const Answer =({input})=>{
             tempA = tempA.concat("0");
         }
         var compM = parseInt((~parseInt(input.divisor,2) + 1 >>> 0).toString(10),10).toString(2).slice(-1*input.divisor.length);
-        setResult({...result, Q: input.dividend, A: tempA, M:input.divisor, nM:compM});
         let negM = parseInt((parseInt(input.divisor,2)).toString(10),10)*-1;
         let M = parseInt((parseInt(input.divisor,2)).toString(10),10);
         let passes = new Array();
@@ -100,6 +101,7 @@ const Answer =({input})=>{
         console.log("Remainder");
         console.log("Binary: " + tempA2);
         console.log("Decimal: " + parseInt((parseInt(tempA2,2)).toString(10),10))
+        setResult({...result, Q: input.dividend, A: tempA, M:input.divisor, nM:compM, FQ: tempQ2, FA: tempA2});
     };
     useEffect(() => {
         if(input.format==0){
@@ -123,6 +125,8 @@ const Answer =({input})=>{
                     <div>Divisor: {result.M}</div>
                     <div>A: {result.A}</div>
                     <div>-M: {result.nM}</div>
+                    <div>Quotient: {result.FQ}</div>
+                    <div>Remainder: {result.FA}</div>
                     </>
                 )}
             </>
