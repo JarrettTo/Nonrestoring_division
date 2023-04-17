@@ -101,7 +101,7 @@ const Answer =({input})=>{
         console.log("Remainder");
         console.log("Binary: " + tempA2);
         console.log("Decimal: " + parseInt((parseInt(tempA2,2)).toString(10),10))
-        setResult({...result, Q: input.dividend, A: tempA, M:input.divisor, nM:compM, FQ: tempQ2, FA: tempA2});
+        setResult({...result, Q: input.dividend, A: tempA, M:input.divisor, nM:compM, FQ: tempQ2, FQ10: parseInt((parseInt(tempQ2,2)).toString(10),10), FA: tempA2, FA10: parseInt((parseInt(tempA2,2)).toString(10),10)});
     };
     useEffect(() => {
         if(input.format==0){
@@ -125,8 +125,10 @@ const Answer =({input})=>{
                     <div>Divisor: {result.M}</div>
                     <div>A: {result.A}</div>
                     <div>-M: {result.nM}</div>
-                    <div>Quotient: {result.FQ}</div>
+                    <div>Quotient_2: {result.FQ}</div>
+                    <div>Quotient_10: {result.FQ10}</div>
                     <div>Remainder: {result.FA}</div>
+                    <div>Remainder_10: {result.FA10}</div>
                     </>
                 )}
             </>
