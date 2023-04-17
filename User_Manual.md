@@ -34,4 +34,5 @@ After placing your inputs and selecting the solution type, view the solution by 
 
 ### 5) Save:
 After the simulator solves the operation, you have the option to save the solution as a ***Text File***.
+Simply select the "Generate Text Report" button to download the full solution.
 
