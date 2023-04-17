@@ -9,7 +9,7 @@ The solution can also be saved as a text file.
 
 ### Select Type of Integer:
 Choose the type of unsigned integer you would want to solve. By default, the simulator solves decimal integers.\
-You may select between Decimal/Binary integers.
+You may select between Decimal/Binary integers on the upper left corner.
 
 ### Type in your Inputs:
 
@@ -20,7 +20,7 @@ Note: Input should be based on your selected type of digit.
 
 ### Select solution Type:
  
-Select between Step-by-step or All solution mode.
+Select between Step-by-step or All solution mode on the upper left corner
 
 **Step-by-step**
 - Selecting this option display the solution step-by-step.
