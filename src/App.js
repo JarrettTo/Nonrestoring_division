@@ -10,14 +10,16 @@ const App =() =>{
         answer:0,
         format: 0,
         divisor:"",
-        dividend:""
+        dividend:"",
+        step:0,
     });
     const [postData, setPostData] = useState({
         //initializes postData to the ff values. we set "setPostData" as the setter function for the state variable "postData"
         answer:0,
         format: 0,
         divisor:"",
-        dividend:""
+        dividend:"",
+        step:0,
     });
     useEffect(() => {
         console.log(postData);
@@ -74,6 +76,19 @@ const App =() =>{
             >
                 <MenuItem value={0}>Decimal</MenuItem>
                 <MenuItem value={1}>Binary</MenuItem>
+            </Select>
+            <Select
+                
+                value={postData.step}
+                label="Format"
+                name="format"
+                onChange={(e) => {
+                    setPostData({ ...postData, step: e.target.value });
+                }}
+            >
+                <MenuItem value={0}>Show Full Solution</MenuItem>
+                <MenuItem value={1}>Step By Step</MenuItem>
+                
             </Select>
             <TextField
                 

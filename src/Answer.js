@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { TextField, Button, Typography, Paper, Select, MenuItem } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-
+import { makeStyles } from '@material-ui/core/styles';
 const Answer =({input})=>{
     const [result, setResult] = useState({
         //Contains the input in binary. Use this state variable to formulate the answer and solution.
@@ -12,6 +12,16 @@ const Answer =({input})=>{
         FQ:"",
         FA:""
     });
+    const [solution, setSolution] = useState(null);
+    const useStyles = makeStyles({
+        paperWithBorder: {
+          border: '1px solid #000000',
+          padding: '10px',
+          marginBottom:"20px",
+          marginTop:"10px"
+        },
+      });
+      const classes= useStyles();
     function pass(A1, A2, A3, Q1, Q2){
         this.A1 = A1;
         this.A2 = A2;
@@ -102,8 +112,13 @@ const Answer =({input})=>{
         console.log("Binary: " + tempA2);
         console.log("Decimal: " + parseInt((parseInt(tempA2,2)).toString(10),10))
         setResult({...result, Q: input.dividend, A: tempA, M:input.divisor, nM:compM, FQ: tempQ2, FQ10: parseInt((parseInt(tempQ2,2)).toString(10),10), FA: tempA2, FA10: parseInt((parseInt(tempA2,2)).toString(10),10)});
+
+        setSolution(passes);
+        console.log(solution);
     };
     useEffect(() => {
+        console.log("SHE")
+       
         if(input.format==0){
             textToBinary();
         }
@@ -115,22 +130,23 @@ const Answer =({input})=>{
             }
             doNRD();
         }
+    
+        
     }, [input]);
     return(
-      
+            
             <>
-                {result.Q!="" && (
+
+                {(solution && solution.length > 0) ? solution.map((pass)=>
                     <>
-                    <div>Dividend: {result.Q}</div>
-                    <div>Divisor: {result.M}</div>
-                    <div>A: {result.A}</div>
-                    <div>-M: {result.nM}</div>
-                    <div>Quotient_2: {result.FQ}</div>
-                    <div>Quotient_10: {result.FQ10}</div>
-                    <div>Remainder: {result.FA}</div>
-                    <div>Remainder_10: {result.FA10}</div>
+                    <Paper className={classes.paperWithBorder}>
+                        <Typography>Pass :</Typography>
+                        <Typography>{pass.A1+" "+pass.Q1}</Typography>
+                        <Typography>{pass.A2}</Typography>
+                        <Typography>{pass.A3+" "+pass.Q2}</Typography>
+                    </Paper>
                     </>
-                )}
+                ): "loading"}
             </>
         
     )
