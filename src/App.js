@@ -10,14 +10,16 @@ const App =() =>{
         answer:0,
         format: 0,
         divisor:"",
-        dividend:""
+        dividend:"",
+        step:0,
     });
     const [postData, setPostData] = useState({
         //initializes postData to the ff values. we set "setPostData" as the setter function for the state variable "postData"
         answer:0,
         format: 0,
         divisor:"",
-        dividend:""
+        dividend:"",
+        step:0,
     });
     useEffect(() => {
         console.log(postData);
@@ -33,8 +35,29 @@ const App =() =>{
             clear();
         }
         else{
-            setInput({...postData, answer:1});
-            setPostData({...postData, answer:1});
+            
+            if(postData.format==1){
+                if(!isBinary(postData.dividend) || !isBinary(postData.divisor) || postData.dividend.length>16 || postData.divisor.length>16){
+                    console.log("error");
+                    clear();
+                }
+                else{
+                    setInput({...postData, answer:1});
+                    setPostData({...postData, answer:1});
+                }
+
+            }else{
+                if(Number(postData.dividend)>65536 || Number(postData.divisor)>65536){
+                    console.log("error");
+                    clear();
+                }
+                else{
+                    setInput({...postData, answer:1});
+                    setPostData({...postData, answer:1});
+                }
+                
+            }
+            
             
             
         }
@@ -45,14 +68,16 @@ const App =() =>{
           format: 0,
           answer:0,
           divisor:"",
-          dividend:""
+          dividend:"",
+          step: 0
           
         });
         setInput({
             format: 0,
             answer:0,
             divisor:"",
-            dividend:""
+            dividend:"",
+            step: 0
             
           });
     };
@@ -60,6 +85,9 @@ const App =() =>{
     function isInteger(value) {
         return /^\d+$/.test(value);
     }
+    function isBinary(str) {
+        return /^[01]+$/.test(str);
+      }
     return(
         <div>
             <form autoComplete="off" noValidate  onSubmit={handleSubmit} >
@@ -74,6 +102,19 @@ const App =() =>{
             >
                 <MenuItem value={0}>Decimal</MenuItem>
                 <MenuItem value={1}>Binary</MenuItem>
+            </Select>
+            <Select
+                
+                value={postData.step}
+                label="Format"
+                name="format"
+                onChange={(e) => {
+                    setPostData({ ...postData, step: e.target.value });
+                }}
+            >
+                <MenuItem value={0}>Show Full Solution</MenuItem>
+                <MenuItem value={1}>Step By Step</MenuItem>
+                
             </Select>
             <TextField
                 

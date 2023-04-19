@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { TextField, Button, Typography, Paper, Select, MenuItem } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-
+import { makeStyles } from '@material-ui/core/styles';
 const Answer =({input})=>{
     const [result, setResult] = useState({
         //Contains the input in binary. Use this state variable to formulate the answer and solution.
@@ -12,12 +12,56 @@ const Answer =({input})=>{
         FQ:"",
         FA:""
     });
+    const [solution, setSolution] = useState(null);
+    const [text, setText] = useState("");
+    const [stepNo, setStepNo] = useState(1);
+    const useStyles = makeStyles({
+        paperWithBorder: {
+          border: '1px solid #000000',
+          padding: '10px',
+          marginBottom:"20px",
+          marginTop:"10px"
+        },
+      });
+      const classes= useStyles();
     function pass(A1, A2, A3, Q1, Q2){
         this.A1 = A1;
         this.A2 = A2;
         this.A3 = A3;
         this.Q1 = Q1;
         this.A2 = Q2;
+    };
+    const incStep = async () => {
+        
+        setStepNo(stepNo+1);
+        
+    };
+    const assembleText = async ()=>{
+        var report=""
+        solution.map((pass, idx)=>{
+            report=report.concat(`Pass #${idx+1}`)
+            report=report.concat('\n',`A: ${pass.A1}  Q:${pass.Q1}`)
+            report=report.concat('\n',`A: ${pass.A2}  Q:${pass.Q1}`)
+            report=report.concat('\n',`A: ${pass.A3}  Q:${pass.Q2}`)
+            report=report.concat('\n\n')
+            
+        })
+        console.log(report)
+        return report
+    }
+    const genText = async () => {
+        let report=await assembleText()
+        const blob = new Blob([report], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.setAttribute('download', 'non-restoringDivision');
+        a.setAttribute('href', url);
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
     };
     const textToBinary = async() => {
         console.log("WOW")
@@ -73,6 +117,7 @@ const Answer =({input})=>{
                 }
             }
             else{
+                
                 tempA1 = tempA2.slice(-1*input.dividend.length) + tempQ2.charAt(0);
                 tempQ1 = tempQ2.slice(-1*(n-1)) + "_"
                 tempA2 = (parseInt(parseInt(parseInt(tempA1,2).toString(10),10) + M,10) >>> 0).toString(2).slice(-1*input.divisor.length).padStart(input.divisor.length, "0");
@@ -96,6 +141,10 @@ const Answer =({input})=>{
             let pass = {"A1": tempA1, "A2": tempA2, "A3": tempA2, "Q1": tempQ1, "Q2": tempQ2};
             passes.push(pass);
         }
+        else{
+            let pass = {"A1": tempA1, "A2": tempA2, "A3": tempA2, "Q1": tempQ1, "Q2": tempQ2};
+            passes.push(pass);
+        }
         console.log(passes);
         console.log("Final");
         console.log("Quotient");
@@ -105,8 +154,14 @@ const Answer =({input})=>{
         console.log("Binary: " + tempA2);
         console.log("Decimal: " + parseInt((parseInt(tempA2,2)).toString(10),10))
         setResult({...result, Q: input.dividend, A: tempA, M:input.divisor, nM:compM, FQ: tempQ2, FQ10: parseInt((parseInt(tempQ2,2)).toString(10),10), FA: tempA2, FA10: parseInt((parseInt(tempA2,2)).toString(10),10)});
+
+        setSolution(passes);
+        console.log(solution);
     };
     useEffect(() => {
+        console.log("SHE")
+        setSolution(null);
+        setStepNo(1)
         if(input.format==0){
             textToBinary();
         }
@@ -118,22 +173,41 @@ const Answer =({input})=>{
             }
             doNRD();
         }
+    
+        
     }, [input]);
     return(
-      
+            
             <>
-                {result.Q!="" && (
+
+                {(solution && solution.length > 0 && input.step==0) ? solution.map((pass,idx)=>
                     <>
-                    <div>Dividend: {result.Q}</div>
-                    <div>Divisor: {result.M}</div>
-                    <div>A: {result.A}</div>
-                    <div>-M: {result.nM}</div>
-                    <div>Quotient_2: {result.FQ}</div>
-                    <div>Quotient_10: {result.FQ10}</div>
-                    <div>Remainder: {result.FA}</div>
-                    <div>Remainder_10: {result.FA10}</div>
+                    <Paper className={classes.paperWithBorder}>
+                        <Typography>Pass #{idx+1}:</Typography>
+                        <Typography>A:{"\t"+pass.A1+"\tQ:"+pass.Q1}</Typography>
+                        <Typography>A:{"\t"+pass.A2+"\tQ"+pass.Q1}</Typography>
+                        <Typography>A:{"\t"+pass.A3+"\tQ:"+pass.Q2}</Typography>
+                    </Paper>
                     </>
-                )}
+                ): ""}
+                
+                {(solution && solution.length > 0 && input.step==1) ? solution.slice(0,stepNo).map((pass,idx)=>
+                    <>
+                    <Paper className={classes.paperWithBorder}>
+                        <Typography>Pass #{idx+1}:</Typography>
+                        <Typography>A:{"\t"+pass.A1+"\tQ:"+pass.Q1}</Typography>
+                        <Typography>A:{"\t"+pass.A2+"\tQ"+pass.Q1}</Typography>
+                        <Typography>A:{"\t"+pass.A3+"\tQ:"+pass.Q2}</Typography>
+                    </Paper>
+                    </>
+                ): ""}
+                {(solution && solution.length > 0 && input.step==1) ? 
+                    (<Button onClick={incStep}> Next Step</Button>)
+                : ""}
+
+                {(solution && solution.length > 0 ) ? 
+                    (<Button onClick={genText}> Generate Text Report</Button>)
+                : ""}
             </>
         
     )
